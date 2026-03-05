@@ -1,12 +1,25 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify
+from models.user import User
+from database import db
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
-db = SQLAlchemy(app)
+login_manager = LoginManager()
+db.init_app(app)
+login_manager.init_app(app)
 
+@app.route('/login', methods=["POST"]) # type: ignore
+def login():
+    data = request.get_json
+    username = data.get("username")
+    password = data.get("password")    
+
+    if username and password:
+        return jsonify({"message": "Login realizado com sucesso"}), 200
+    return jsonify({"message": 'Credenciais inválidas'}), 400
 
 @app.route('/hello-world', methods=['GET'])
 def hello_world():
