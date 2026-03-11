@@ -13,7 +13,7 @@ login_manager.init_app(app)
 
 @app.route('/login', methods=["POST"]) # type: ignore
 def login():
-    data = request.get_json
+    data = request.get_json()
     username = data.get("username")
     password = data.get("password")    
 
